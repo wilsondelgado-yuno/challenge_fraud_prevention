@@ -1,0 +1,256 @@
+{
+  "info": {
+    "name": "Lumina Fraud API",
+    "description": "Lumina Gaming — Chargeback Intelligence API demo collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8080" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "GET /health",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/health"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Transactions",
+      "item": [
+        {
+          "name": "Submit — Low risk (legitimate player)",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/v1/transactions",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transaction_id\":     \"demo_legit_001\",\n  \"timestamp\":          \"2026-02-25T14:00:00Z\",\n  \"amount\":             35.00,\n  \"currency\":           \"BRL\",\n  \"user_email\":         \"carlos.silva@gmail.com\",\n  \"ip_address\":         \"177.23.45.12\",\n  \"ip_country\":         \"BR\",\n  \"card_bin\":           \"453211\",\n  \"card_country\":       \"BR\",\n  \"device_fingerprint\": \"dev_br_a1b2c3\",\n  \"account_created_at\": \"2025-01-01T10:00:00Z\",\n  \"merchant_country\":   \"BR\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Submit — Velocity abuse #1",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/v1/transactions",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transaction_id\":     \"demo_vel_001\",\n  \"timestamp\":          \"2026-02-25T15:01:00Z\",\n  \"amount\":             49.99,\n  \"currency\":           \"BRL\",\n  \"user_email\":         \"velocity_test@example.com\",\n  \"ip_address\":         \"201.99.11.22\",\n  \"ip_country\":         \"BR\",\n  \"card_bin\":           \"456789\",\n  \"card_country\":       \"BR\",\n  \"device_fingerprint\": \"dev_vel_test\",\n  \"account_created_at\": \"2026-02-24T12:00:00Z\",\n  \"merchant_country\":   \"BR\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Submit — Velocity abuse #2 (score rises)",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/v1/transactions",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transaction_id\":     \"demo_vel_002\",\n  \"timestamp\":          \"2026-02-25T15:03:00Z\",\n  \"amount\":             49.99,\n  \"currency\":           \"BRL\",\n  \"user_email\":         \"velocity_test@example.com\",\n  \"ip_address\":         \"201.99.11.22\",\n  \"ip_country\":         \"BR\",\n  \"card_bin\":           \"456789\",\n  \"card_country\":       \"BR\",\n  \"device_fingerprint\": \"dev_vel_test\",\n  \"account_created_at\": \"2026-02-24T12:00:00Z\",\n  \"merchant_country\":   \"BR\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Submit — Velocity abuse #3 (score higher)",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/v1/transactions",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transaction_id\":     \"demo_vel_003\",\n  \"timestamp\":          \"2026-02-25T15:05:00Z\",\n  \"amount\":             49.99,\n  \"currency\":           \"BRL\",\n  \"user_email\":         \"velocity_test@example.com\",\n  \"ip_address\":         \"201.99.11.22\",\n  \"ip_country\":         \"BR\",\n  \"card_bin\":           \"456789\",\n  \"card_country\":       \"BR\",\n  \"device_fingerprint\": \"dev_vel_test\",\n  \"account_created_at\": \"2026-02-24T12:00:00Z\",\n  \"merchant_country\":   \"BR\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Submit — Obvious fraud (100 score expected)",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/v1/transactions",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transaction_id\":     \"demo_fraud_001\",\n  \"timestamp\":          \"2026-02-25T03:30:00Z\",\n  \"amount\":             99.99,\n  \"currency\":           \"BRL\",\n  \"user_email\":         \"obvious_fraud@disposable.xyz\",\n  \"ip_address\":         \"185.100.87.12\",\n  \"ip_country\":         \"RU\",\n  \"card_bin\":           \"400000\",\n  \"card_country\":       \"US\",\n  \"device_fingerprint\": \"dev_fraud_demo\",\n  \"account_created_at\": \"2026-02-25T03:15:00Z\",\n  \"merchant_country\":   \"BR\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Submit — New account large purchase",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/v1/transactions",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transaction_id\":     \"demo_newacct_001\",\n  \"timestamp\":          \"2026-02-25T10:00:00Z\",\n  \"amount\":             500.00,\n  \"currency\":           \"BRL\",\n  \"user_email\":         \"brand_new@gmail.com\",\n  \"ip_address\":         \"177.55.66.77\",\n  \"ip_country\":         \"BR\",\n  \"card_bin\":           \"456789\",\n  \"card_country\":       \"BR\",\n  \"device_fingerprint\": \"dev_new_acct\",\n  \"account_created_at\": \"2026-02-25T09:45:00Z\",\n  \"merchant_country\":   \"BR\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Submit — Geo mismatch (RU IP, BR card)",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/v1/transactions",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transaction_id\":     \"demo_geo_001\",\n  \"timestamp\":          \"2026-02-25T11:00:00Z\",\n  \"amount\":             89.90,\n  \"currency\":           \"BRL\",\n  \"user_email\":         \"buyer1@proton.me\",\n  \"ip_address\":         \"185.100.87.12\",\n  \"ip_country\":         \"RU\",\n  \"card_bin\":           \"453211\",\n  \"card_country\":       \"BR\",\n  \"device_fingerprint\": \"dev_geo_001\",\n  \"account_created_at\": \"2026-02-20T00:00:00Z\",\n  \"merchant_country\":   \"BR\"\n}"
+            }
+          }
+        },
+        {
+          "name": "GET transaction by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/transactions/demo_legit_001"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Entity Summary",
+      "item": [
+        {
+          "name": "GET entity — email (known good user)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/entities/email/carlos.silva%40gmail.com?days=7",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "entities", "email", "carlos.silva%40gmail.com"],
+              "query": [{ "key": "days", "value": "7" }]
+            }
+          }
+        },
+        {
+          "name": "GET entity — email (fraud ring)",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/entities/email/fraud_ring_1%40tempbox.net"
+          }
+        },
+        {
+          "name": "GET entity — IP (suspicious)",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/entities/ip/185.220.101.5"
+          }
+        },
+        {
+          "name": "GET entity — device (shared fingerprint)",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/entities/device/dev_shared_fingerprint_xyz"
+          }
+        },
+        {
+          "name": "GET entity — card BIN",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/entities/bin/400000"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Blocklist",
+      "item": [
+        {
+          "name": "GET blocklist",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/blocklist"
+          }
+        },
+        {
+          "name": "POST — block a fraud IP",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/v1/blocklist",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\":      \"ip\",\n  \"value\":     \"185.100.87.12\",\n  \"list_type\": \"block\",\n  \"reason\":    \"confirmed fraud ring IP — multiple chargebacks\"\n}"
+            }
+          }
+        },
+        {
+          "name": "POST — allowlist a known-good email",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/v1/blocklist",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\":      \"email\",\n  \"value\":     \"vip_player@lumina.com\",\n  \"list_type\": \"allow\",\n  \"reason\":    \"verified VIP account, manual review waived\"\n}"
+            }
+          }
+        },
+        {
+          "name": "POST — block with expiry",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/v1/blocklist",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\":       \"bin\",\n  \"value\":      \"400000\",\n  \"list_type\":  \"block\",\n  \"reason\":     \"BIN reported stolen by issuer\",\n  \"expires_at\": \"2026-06-01T00:00:00Z\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE blocklist entry",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base_url}}/api/v1/blocklist/REPLACE_WITH_ENTRY_ID"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reports",
+      "item": [
+        {
+          "name": "GET fraud pattern report (last 24h)",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/reports/fraud-patterns"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Webhooks",
+      "item": [
+        {
+          "name": "POST — register webhook",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/v1/webhooks",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\":       \"https://webhook.site/YOUR_TOKEN\",\n  \"threshold\": 80\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE webhook",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base_url}}/api/v1/webhooks/REPLACE_WITH_WEBHOOK_ID"
+          }
+        }
+      ]
+    }
+  ]
+}
