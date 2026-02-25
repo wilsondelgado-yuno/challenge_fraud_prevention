@@ -21,6 +21,7 @@ import (
 	"os"
 	"os/signal"
 	"sort"
+	"strconv"
 	"syscall"
 	"time"
 
@@ -35,6 +36,14 @@ func main() {
 	port := flag.Int("port", 8080, "HTTP port")
 	seedFile := flag.String("seed", "data/seed.json", "path to seed data JSON file")
 	flag.Parse()
+
+	// Railway (and most PaaS platforms) inject PORT as an env var.
+	// It takes precedence over the -port flag.
+	if envPort := os.Getenv("PORT"); envPort != "" {
+		if p, err := strconv.Atoi(envPort); err == nil {
+			*port = p
+		}
+	}
 
 	// Structured logging — JSON in production, text-friendly in development.
 	slog.SetDefault(slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
